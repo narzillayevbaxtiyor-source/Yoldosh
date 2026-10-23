@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ea580c">
+<title>Yo'ldosh</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Yo'ldosh">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-sec="home">
+<header class="top">
+  <a class="logo" href="#/home">🧭 Yo'ldosh</a>
+  <div class="tools">
+    <div class="langs" id="langs"></div>
+    <button class="ibtn" id="installBtn" data-act="install" aria-label="Install" hidden>📲</button>
+    <button class="ibtn" id="themeBtn" aria-label="Theme">🌓</button>
+  </div>
+</header>
+<main id="view"></main>
+<nav id="nav"></nav>
+<button class="fab" data-act="chat" aria-label="AI">💬</button>
+<div id="modal" hidden></div>
+<div id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
