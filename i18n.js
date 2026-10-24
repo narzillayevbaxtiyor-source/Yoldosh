@@ -186,5 +186,17 @@ const T = {
   ai_busy:{uz:"Juda ko'p so'rov. Birozdan keyin urinib ko'ring.",cyr:"Жуда кўп сўров. Бироздан кейин уриниб кўринг.",ru:"Слишком много запросов. Попробуйте позже."},
   ai_fill:{uz:"✨ AI bilan to'ldirish",cyr:"✨ AI билан тўлдириш",ru:"✨ Заполнить с помощью ИИ"},
   ai_fill_ph:{uz:"Masalan: 15-dekabrda Toshkentdan Moskvaga ikki kishi",cyr:"Масалан: 15-декабрда Тошкентдан Москвага икки киши",ru:"Например: 15 декабря из Ташкента в Москву, двое"},
+  hint_ticket:{uz:"Qayerdan qayerga uchasiz? Yozing — eng arzon biletni biz topamiz.",cyr:"Қаердан қаерга учасиз? Ёзинг — энг арзон билетни биз топамиз.",ru:"Откуда и куда летите? Напишите — найдём самый дешёвый билет."},
+  hint_transfer:{uz:"Haydovchilar o'zi narx yozadi. Eng arzonini tanlang.",cyr:"Ҳайдовчилар ўзи нарх ёзади. Энг арзонини танланг.",ru:"Водители сами предлагают цену. Выберите выгодную."},
+  hint_housing:{uz:"Tekshirilgan uy e'lonlari. Ko'rmasdan pul to'lamang.",cyr:"Текширилган уй эълонлари. Кўрмасдан пул тўламанг.",ru:"Проверенные объявления. Не платите, не увидев жильё."},
+  hint_jobs:{uz:"Ish e'lonlari admin va AI tekshiruvidan o'tadi.",cyr:"Иш эълонлари админ ва AI текширувидан ўтади.",ru:"Вакансии проходят проверку админом и ИИ."},
+  hint_places:{uz:"Kasalxona, masjid, oshxona va pul o'tkazish joylari.",cyr:"Касалхона, масжид, ошхона ва пул ўтказиш жойлари.",ru:"Больницы, мечети, кафе и пункты денежных переводов."},
+  trust1:{uz:"Tekshirilgan e'lonlar",cyr:"Текширилган эълонлар",ru:"Проверенные объявления"},
+  trust2:{uz:"Telegram orqali tasdiq",cyr:"Telegram орқали тасдиқ",ru:"Подтверждение через Telegram"},
+  trust3:{uz:"Mutlaqo bepul",cyr:"Мутлақо бепул",ru:"Полностью бесплатно"},
+  wl_title:{uz:"Xush kelibsiz!",cyr:"Хуш келибсиз!",ru:"Добро пожаловать!"},
+  wl_next:{uz:"Keyingisi",cyr:"Кейингиси",ru:"Далее"},
+  wl_start:{uz:"Boshlash",cyr:"Бошлаш",ru:"Начать"},
+  hero_sub:{uz:"Bilet, transfer, uy va ish — hammasi bir joyda",cyr:"Билет, трансфер, уй ва иш — ҳаммаси бир жойда",ru:"Билеты, трансфер, жильё и работа — всё в одном месте"},
   ai_fill_none:{uz:"Ma'lumot topilmadi. Qayerdan, qayerga va sanani yozing.",cyr:"Маълумот топилмади. Қаердан, қаерга ва санани ёзинг.",ru:"Данные не найдены. Укажите откуда, куда и дату."}
 };

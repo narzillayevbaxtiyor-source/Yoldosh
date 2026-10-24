@@ -79,13 +79,13 @@ function tgLink(v) {
 }
 const waLink = v => 'https://wa.me/' + digits(v);
 const contactFields = () => `
-  <label>${t('telegram')}<input name="tg" autocomplete="off" maxlength="64" placeholder="@username / +998…" value="${esc(ls.get('tg') || '')}"></label>
-  <label>${t('whatsapp')}<input name="wa" inputmode="tel" maxlength="20" placeholder="+998…" value="${esc(ls.get('wa') || '')}"></label>
+  <label>${t('telegram')}<input name="tg" autocomplete="off" maxlength="64" placeholder="@username / +998…"></label>
+  <label>${t('whatsapp')}<input name="wa" inputmode="tel" maxlength="20" placeholder="+998…"></label>
   <small>${t('contact_hint')}</small>`;
 async function mkContact(fd) {
   const tg = (fd.get('tg') || '').trim(), wa = (fd.get('wa') || '').trim();
   if (!tg && !wa) throw new Error(t('contact_req'));
-  ls.set('tg', tg); ls.set('wa', wa);
+  
   await needAuth();
   const { data, error } = await sb.from('contacts').insert({ owner: S.user.id, telegram: tg || null, whatsapp: wa || null }).select('id').single();
   if (error) throw error;
@@ -141,7 +141,7 @@ function drawChrome() {
 function countryCard(c, i) {
   const g = GRAD[c.slug] || ['#ea580c', '#f59e0b'];
   const img = c.image_url ? `background-image:url('${esc(c.image_url)}');` : '';
-  return `<button class="cc ${c.image_url ? 'img' : ''} ${S.country === c.slug ? 'on' : ''}" data-act="country" data-v="${esc(c.slug)}" style="--g1:${g[0]};--g2:${g[1]};${img}animation-delay:${i * 40}ms"><i>${esc(c.icon || '🌍')}</i><b>${esc(nm(c))}</b></button>`;
+  return `<button class="cc ${c.image_url ? 'img' : ''} ${S.country === c.slug ? 'on' : ''}" data-act="country" data-v="${esc(c.slug)}" style="--g1:${g[0]};--g2:${g[1]};${img}animation-delay:${i * 40}ms">${ART.scene(c.slug, true)}<i>${esc(c.icon || '🌍')}</i><b>${esc(nm(c))}</b></button>`;
 }
 function dealCard(d) {
   S.cache[d.id] = d;
@@ -170,7 +170,9 @@ function needCountry(v) {
 
 PAGES.home = async v => {
   const c = country();
-  v.innerHTML = `<section class="hero"><h1>${t('choose_country')}</h1><p>${t('choose_country_sub')}</p></section>
+  v.innerHTML = `${ART.hero(S.country || 'def', t('choose_country'), t('hero_sub'))}
+  <div class="trust"><span>🛡️ ${t('trust1')}</span><span>✈️ ${t('trust2')}</span><span>💚 ${t('trust3')}</span></div>
+  <p class="meta" style="margin:0 2px 10px">${t('choose_country_sub')}</p>
   ${isStandalone() ? '' : `<button class="btn ghost" style="margin-bottom:12px" data-act="install">📲 ${t('install_btn')}</button>`}
   <div class="cgrid">${S.countries.map(countryCard).join('')}</div>
   <h3 class="sh">${t('hot_title')}</h3><div id="h-hot" class="car">${sk(1)}</div>
@@ -208,13 +210,13 @@ PAGES.home = async v => {
 /* ---------- BILET ---------- */
 PAGES.ticket = async v => {
   const p = S.prefill || {}; S.prefill = null;
-  v.innerHTML = `<h2 class="pt">✈️ ${t('ticket_title')}</h2><div class="warn" style="background:var(--accs);color:var(--acc)">${t('ticket_note')}</div>
+  v.innerHTML = `${ART.banner('ticket', t('ticket_title'), t('hint_ticket'))}<div class="warn" style="background:var(--accs);color:var(--acc)">${t('ticket_note')}</div>
   <div class="card pad" style="margin-bottom:12px"><textarea id="aitxt" maxlength="400" placeholder="${esc(t('ai_fill_ph'))}"></textarea><button class="btn ghost" style="margin-top:8px" data-act="aifill">${t('ai_fill')}</button></div>
   <form class="card pad" data-form="ticket">
     <div class="row"><label>${t('from')}<input name="from" required maxlength="80" value="${esc(p.from || '')}"></label><label>${t('to')}<input name="to" required maxlength="80" value="${esc(p.to || '')}"></label></div>
     <div class="row"><label>${t('date')}<input type="date" name="date" required min="${new Date().toISOString().slice(0, 10)}" value="${esc(p.date || '')}"></label>
     <label>${t('pax')}<select name="pax">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<option>${n}</option>`).join('')}</select></label></div>
-    <label>${t('name')}<input name="name" required minlength="2" maxlength="60" value="${esc(ls.get('name') || '')}"></label>
+    <label>${t('name')}<input name="name" required minlength="2" maxlength="60"></label>
     ${contactFields()}
     <button class="btn" type="submit">${t('send')}</button>
   </form>`;
@@ -224,8 +226,9 @@ PAGES.ticket = async v => {
 PAGES.transfer = async v => {
   if (!needCountry(v)) return;
   try { await auth(); await loadProfile(); } catch (e) { /* anonim kirish o'chiq bo'lishi mumkin */ }
+  if (!S.tabs.transfer && S.user) { const { data: dd } = await sb.from('drivers').select('user_id').eq('user_id', S.user.id).maybeSingle(); S.tabs.transfer = dd ? 'drv' : 'pass'; }
   const tab = S.tabs.transfer || 'pass';
-  v.innerHTML = `<h2 class="pt">🚕 ${t('transfer_title')}</h2>${seg('transfer', [['pass', t('passenger')], ['drv', t('driver')]], tab)}<div id="tr"></div>`;
+  v.innerHTML = `${ART.banner('transfer', t('transfer_title'), t('hint_transfer'))}${seg('transfer', [['pass', t('passenger')], ['drv', t('driver')]], tab)}<div id="tr"></div>`;
   const el = $('#tr');
   if (!S.user) { el.innerHTML = empty('🔒', t('anon_off')); return; }
   if (tab === 'drv') await drvTab(el); else await passTab(el);
@@ -233,7 +236,7 @@ PAGES.transfer = async v => {
 const seg = (pg, items, cur) => `<div class="seg">${items.map(([k, l]) => `<button data-act="tab" data-pg="${pg}" data-v="${k}" class="${cur === k ? 'on' : ''}">${l}</button>`).join('')}</div>`;
 const verifyBanner = () => S.profile && !S.profile.verified ? `<div class="warn"><b>${t('verify_title')}</b><br>${t('verify_text')}<br><button class="btn sm" style="margin-top:8px" data-act="verify">✈️ ${t('verify_btn')}</button></div>` : '';
 const profileForm = role => `<form class="card pad" data-form="profile"><h3>${t('profile_title')}</h3><input type="hidden" name="role" value="${role}">
-  <label>${t('name')}<input name="name" required minlength="2" maxlength="60" value="${esc(ls.get('name') || '')}"></label>${contactFields()}<button class="btn" type="submit">${t('send')}</button></form>`;
+  <label>${t('name')}<input name="name" required minlength="2" maxlength="60"></label>${contactFields()}<button class="btn" type="submit">${t('send')}</button></form>`;
 
 async function passTab(el) {
   if (!S.profile) { el.innerHTML = profileForm('passenger'); return; }
@@ -280,7 +283,7 @@ async function drvTab(el) {
   if (!d) {
     const c = country();
     el.innerHTML = `<form class="card pad" data-form="driver"><h3>${t('reg_driver')}</h3>
-      <label>${t('name')}<input name="name" required minlength="2" maxlength="60" value="${esc(ls.get('name') || '')}"></label>
+      <label>${t('name')}<input name="name" required minlength="2" maxlength="60"></label>
       <div class="row"><label>${t('car_model')}<input name="model" required maxlength="40"></label><label>${t('car_color')}<input name="color" required maxlength="30"></label></div>
       <label>${t('plate')}<input name="plate" required maxlength="20"></label>
       <div class="row"><label>${t('country')}<select name="country" data-citysel="dcity">${S.countries.map(x => `<option value="${x.id}" ${x.id === c.id ? 'selected' : ''}>${esc(nm(x))}</option>`).join('')}</select></label>
@@ -312,7 +315,7 @@ async function drvTab(el) {
 PAGES.housing = async v => {
   if (!needCountry(v)) return;
   const tab = S.tabs.housing || 's';
-  v.innerHTML = `<h2 class="pt">🛏️ ${t('housing_title')}</h2>${seg('housing', [['s', t('search_tab')], ['p', t('post_tab_housing')]], tab)}<div id="hb"></div>`;
+  v.innerHTML = `${ART.banner('housing', t('housing_title'), t('hint_housing'))}${seg('housing', [['s', t('search_tab')], ['p', t('post_tab_housing')]], tab)}<div id="hb"></div>`;
   const el = $('#hb');
   if (tab === 'p') { el.innerHTML = housingForm(); return; }
   el.innerHTML = `<form class="card pad" data-form="hsearch" data-auto="1"><div class="row"><label>${t('city')}<select name="city">${cityOpts(S.city, true)}</select></label>
@@ -329,14 +332,14 @@ const housingForm = () => `<form class="card pad" data-form="hpost"><div class="
   <label>${t('audience')}<select name="aud">${['any', 'men', 'women', 'family'].map(k => `<option value="${k}">${t('aud_' + k)}</option>`).join('')}</select></label></div>
   <label>${t('description')}<textarea name="desc" maxlength="2000"></textarea></label>
   <label>${t('photos')}<input type="file" name="photos" accept="image/*" multiple></label>
-  <label>${t('name')}<input name="name" required minlength="2" maxlength="60" value="${esc(ls.get('name') || '')}"></label>${contactFields()}
+  <label>${t('name')}<input name="name" required minlength="2" maxlength="60"></label>${contactFields()}
   <button class="btn" type="submit">${t('send')}</button></form>`;
 
 /* ---------- ISH ---------- */
 PAGES.jobs = async v => {
   if (!needCountry(v)) return;
   const tab = S.tabs.jobs || 's';
-  v.innerHTML = `<h2 class="pt">💼 ${t('jobs_title')}</h2>${seg('jobs', [['s', t('search_tab')], ['p', t('post_tab_job')]], tab)}<div id="jb"></div>`;
+  v.innerHTML = `${ART.banner('jobs', t('jobs_title'), t('hint_jobs'))}${seg('jobs', [['s', t('search_tab')], ['p', t('post_tab_job')]], tab)}<div id="jb"></div>`;
   const el = $('#jb');
   const SEC = ['construction', 'warehouse', 'factory', 'driver', 'kitchen', 'agriculture', 'other'];
   if (tab === 'p') {
@@ -363,7 +366,7 @@ PAGES.places = async v => {
   const cities = myCities();
   if (!S.city || !cities.find(x => String(x.id) === String(S.city))) S.city = cities[0] ? String(cities[0].id) : '';
   const cats = ['hospital', 'mosque', 'restaurant', 'money'], ci = { hospital: '🏥', mosque: '🕌', restaurant: '🍲', money: '💸' };
-  v.innerHTML = `<h2 class="pt">📍 ${t('places_title')}</h2>
+  v.innerHTML = `${ART.banner('places', t('places_title'), t('hint_places'))}
   <div class="chips">${cities.map(x => `<button data-act="pcity" data-v="${x.id}" class="${String(x.id) === String(S.city) ? 'on' : ''}">${esc(nm(x))}</button>`).join('')}</div>
   <div class="chips">${cats.map(k => `<button data-act="pcat" data-v="${k}" class="${S.place.cat === k ? 'on' : ''}">${ci[k]} ${t('cat_' + k)}</button>`).join('')}</div><div id="pl">${sk(2)}</div>`;
   const { data } = await sb.from('places').select('*,cities(name_uz,name_cyr,name_ru)').eq('active', true).eq('city_id', S.city).eq('category', S.place.cat).order('name');
@@ -380,14 +383,15 @@ PAGES.places = async v => {
 const FORMS = {};
 FORMS.ticket = async f => {
   const fd = new FormData(f); const cid = await mkContact(fd);
-  ls.set('name', fd.get('name').trim());
+  
   const { error } = await sb.from('ticket_orders').insert({ user_id: S.user.id, name: fd.get('name').trim(), from_place: fd.get('from').trim(), to_place: fd.get('to').trim(), travel_date: fd.get('date'), pax: +fd.get('pax'), contact_id: cid });
   if (error) throw error;
   f.outerHTML = `<div class="card radar"><div class="pl">✈️</div><div class="dots"><span></span><span></span><span></span></div><p style="margin-top:12px;font-weight:600">${t('ticket_searching')}</p><button class="btn ghost" style="margin-top:14px" data-act="newticket">${t('new_request')}</button></div>`;
+  confetti();
 };
 FORMS.profile = async f => {
   const fd = new FormData(f); await needAuth(); await mkContact(fd);
-  const name = fd.get('name').trim(); ls.set('name', name);
+  const name = fd.get('name').trim(); 
   const { error } = await sb.from('profiles').insert({ id: S.user.id, name, role: fd.get('role') });
   if (error) throw error;
   await loadProfile(); render();
@@ -400,7 +404,7 @@ FORMS.ride = async f => {
 };
 FORMS.driver = async f => {
   const fd = new FormData(f); await needAuth();
-  const name = fd.get('name').trim(); ls.set('name', name);
+  const name = fd.get('name').trim(); 
   const cid = await mkContact(fd);
   if (!S.profile) { const { error } = await sb.from('profiles').insert({ id: S.user.id, name, role: 'driver' }); if (error) throw error; await loadProfile(); }
   const { error } = await sb.from('drivers').insert({ user_id: S.user.id, name, car_model: fd.get('model').trim(), car_color: fd.get('color').trim(), plate: fd.get('plate').trim().toUpperCase(), contact_id: cid, country_id: +fd.get('country'), city_id: +fd.get('city') });
@@ -439,7 +443,7 @@ FORMS.review = async f => {
   const fd = new FormData(f);
   const { error } = await sb.from('reviews').insert({ request_id: fd.get('req'), driver_id: fd.get('driver'), passenger_id: S.user.id, stars: +fd.get('stars'), comment: (fd.get('comment') || '').trim() || null });
   if (error) throw error;
-  closeModal(); toast(t('thanks')); loadMyReq();
+  closeModal(); toast(t('thanks')); confetti(); loadMyReq();
 };
 FORMS.report = async f => {
   const fd = new FormData(f);
@@ -471,12 +475,13 @@ FORMS.jsearch = async f => {
 };
 FORMS.hpost = async f => {
   const fd = new FormData(f); await needAuth();
-  const name = fd.get('name').trim(); ls.set('name', name);
+  const name = fd.get('name').trim(); 
   const cid = await mkContact(fd);
   const images = await uploadImages(f.elements.photos.files);
   const { error } = await sb.from('housing').insert({ owner_id: S.user.id, title: fd.get('title').trim(), city_id: +fd.get('city'), area: (fd.get('area') || '').trim() || null, price: +fd.get('price'), currency: fd.get('cur'), kind: fd.get('kind'), audience: fd.get('aud'), description: (fd.get('desc') || '').trim() || null, images, poster_name: name, contact_id: cid, status: 'pending' });
   if (error) throw error;
   f.outerHTML = `<div class="card radar"><div class="pl">🏠</div><p style="font-weight:600">${t('posted_housing')}</p></div>`;
+  confetti();
 };
 FORMS.jpost = async f => {
   const fd = new FormData(f); await needAuth();
@@ -484,6 +489,7 @@ FORMS.jpost = async f => {
   const { error } = await sb.from('jobs').insert({ owner_id: S.user.id, title: fd.get('title').trim(), city_id: +fd.get('city'), salary: fd.get('salary') ? +fd.get('salary') : null, currency: fd.get('cur'), sector: fd.get('sector'), schedule: (fd.get('sched') || '').trim() || null, requirements: (fd.get('req') || '').trim() || null, housing_provided: fd.get('hous') === 'on', employer: (fd.get('emp') || '').trim() || null, contact_id: cid, status: 'pending' });
   if (error) throw error;
   f.outerHTML = `<div class="card radar"><div class="pl">💼</div><p style="font-weight:600">${t('posted_job')}</p></div>`;
+  confetti();
 };
 
 /* ============ HODISALAR ============ */
@@ -501,6 +507,7 @@ document.addEventListener('change', e => {
 });
 const ACT = {
   close: closeModal,
+  wnext(b) { showWelcome(+b.dataset.i); },
   lang(b) { S.lang = b.dataset.v; ls.set('lang', S.lang); render(); },
   country(b) { S.country = b.dataset.v; ls.set('country', S.country); S.city = ''; render(); },
   tab(b) { S.tabs[b.dataset.pg] = b.dataset.v; render(); },
@@ -593,6 +600,23 @@ document.addEventListener('click', e => {
   Promise.resolve(ACT[b.dataset.act](b)).catch(err => toast(errMsg(err)));
 });
 
+/* ============ KUTIB OLISH OYNASI VA KONFETTI ============ */
+const WL = [['🌍', 'hw1'], ['✈️', 'hw2'], ['🚕', 'hw3'], ['🏠', 'hw4']];
+function showWelcome(i) {
+  ls.set('seen', '1');
+  const [em, k] = WL[i], last = i === WL.length - 1;
+  openModal(`<div class="wl"><div class="big">${em}</div><small>${i === 0 ? t('wl_title') : ''}</small><h3>${t(k)}</h3><p>${t(k + 'd')}</p>
+    <div class="dots2">${WL.map((_, j) => `<b class="${j === i ? 'on' : ''}"></b>`).join('')}</div>
+    <button class="btn" data-act="${last ? 'close' : 'wnext'}" data-i="${i + 1}">${last ? t('wl_start') : t('wl_next')}</button></div>`);
+}
+function confetti() {
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const w = document.createElement('div'); w.className = 'confetti';
+  const cols = ['#f97316', '#2563eb', '#10b981', '#ec4899', '#eab308', '#8b5cf6'];
+  for (let i = 0; i < 26; i++) { const e = document.createElement('i'); e.style.left = Math.random() * 100 + '%'; e.style.background = cols[i % 6]; e.style.animationDelay = Math.random() * .5 + 's'; e.style.transform = `rotate(${Math.random() * 180}deg)`; w.appendChild(e); }
+  document.body.appendChild(w); setTimeout(() => w.remove(), 3200);
+}
+
 /* ============ ILOVA SIFATIDA O'RNATISH (PWA) ============ */
 function isStandalone() { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; }
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); S.installEvt = e; });
@@ -609,6 +633,7 @@ async function render() {
   const v = $('#view');
   if (!S.countries.length) v.innerHTML = sk(3);
   window.scrollTo(0, 0);
+  v.classList.remove('vin'); void v.offsetWidth; v.classList.add('vin');
   try { await PAGES[S.route](v); } catch (e) { console.error(e); v.innerHTML = empty('⚠️', errMsg(e)); }
 }
 async function init() {
@@ -624,5 +649,6 @@ async function init() {
   sb.auth.getSession().then(({ data }) => { if (data.session) { S.user = data.session.user; return loadProfile(); } }).catch(() => { });
   window.addEventListener('hashchange', render);
   render();
+  if (!ls.get('seen')) showWelcome(0);
 }
 init();

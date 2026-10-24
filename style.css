@@ -136,3 +136,53 @@ small{color:var(--mut)}
 @keyframes slide{from{transform:translateY(40px);opacity:.6}}
 @keyframes glow{50%{box-shadow:0 0 0 10px rgba(22,163,74,.18)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.how>div{opacity:1}}
+
+/* ===== Illyustratsiya va animatsiyalar ===== */
+.scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cl{animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-70px)}to{transform:translateX(440px)}}
+.herob{position:relative;height:210px;border-radius:22px;overflow:hidden;margin-bottom:12px;box-shadow:var(--sh);color:#fff}
+.herob .tx{position:relative;z-index:2;padding:16px 16px 0;text-shadow:0 2px 8px rgba(0,0,0,.35)}
+.herob h1{font-size:26px;line-height:1.12;font-weight:800;max-width:88%}
+.herob p{margin-top:6px;font-size:14px;max-width:85%;opacity:.95}
+.plane{position:absolute;z-index:1;top:46%;left:0;animation:fly2 15s linear infinite;filter:drop-shadow(0 3px 4px rgba(0,0,0,.25))}
+.plane:before{content:"";position:absolute;right:92%;top:50%;width:80px;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.85))}
+@keyframes fly2{0%{transform:translate(-90px,14px) rotate(-6deg)}50%{transform:translate(50vw,-6px) rotate(2deg)}100%{transform:translate(105vw,-26px) rotate(-8deg)}}
+.cc .scene{z-index:0}
+.cc.on{animation:none}
+.cc{transition:transform .15s}
+.cc:active{transform:scale(.96)}
+.cc b,.cc i{z-index:2}
+.cc.img .scene{display:none}
+.banner{position:relative;display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:108px;border-radius:20px;padding:14px 6px 14px 16px;margin-bottom:14px;color:#fff;overflow:hidden;background:linear-gradient(135deg,var(--b1),var(--b2));box-shadow:var(--sh);animation:up .4s both}
+.banner:before{content:"";position:absolute;right:-30px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.14)}
+.banner:after{content:"";position:absolute;left:30%;bottom:-50px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.1)}
+.banner .bt{position:relative;z-index:1}
+.banner h2{font-size:23px;font-weight:800;line-height:1.1}
+.banner p{font-size:13px;opacity:.95;margin-top:5px;max-width:200px}
+.banner .bi{position:relative;z-index:1;flex:none;width:122px;height:92px}
+.vin{animation:vin .32s both}
+@keyframes vin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.trust{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.trust span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:12.5px;font-weight:700;animation:up .5s both}
+.trust span:nth-child(2){animation-delay:.1s}.trust span:nth-child(3){animation-delay:.2s}
+.deal:before{content:"✈️";position:absolute;right:8px;bottom:-8px;font-size:66px;opacity:.16;transform:rotate(-12deg)}
+.empty .em{width:100px;height:100px;margin:0 auto 12px;border-radius:50%;background:var(--accs);display:flex;align-items:center;justify-content:center;font-size:50px}
+.card:nth-child(2){animation-delay:.05s}.card:nth-child(3){animation-delay:.1s}.card:nth-child(4){animation-delay:.15s}.card:nth-child(n+5){animation-delay:.2s}
+.btn{transition:transform .12s,filter .12s}
+.btn:active{transform:scale(.97);filter:brightness(.93)}
+.how>div{position:relative}
+.how>div:not(:last-child):after{content:"";position:absolute;left:33px;top:54px;height:12px;width:2px;background:repeating-linear-gradient(var(--acc) 0 3px,transparent 3px 6px)}
+.how .n{animation:pop .6s both}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+.confetti i{position:absolute;top:-16px;width:8px;height:14px;border-radius:2px;animation:fall 2.2s ease-in forwards}
+@keyframes fall{to{transform:translateY(108vh) rotate(600deg)}}
+.wl{text-align:center;padding-top:6px}
+.wl .big{width:150px;height:150px;margin:6px auto 14px;border-radius:50%;background:var(--accs);display:flex;align-items:center;justify-content:center;font-size:76px;position:relative;animation:float 3s ease-in-out infinite}
+.wl .big:after{content:"";position:absolute;inset:-8px;border-radius:50%;border:3px solid var(--acc);opacity:0;animation:pulse 2.2s infinite}
+.wl h3{font-size:22px;margin-bottom:8px;padding:0}
+.wl p{color:var(--mut);margin-bottom:16px}
+.wl .dots2{display:flex;gap:7px;justify-content:center;margin-bottom:16px}
+.wl .dots2 b{width:8px;height:8px;border-radius:50%;background:var(--line);transition:.25s}
+.wl .dots2 b.on{width:24px;border-radius:6px;background:var(--acc)}
