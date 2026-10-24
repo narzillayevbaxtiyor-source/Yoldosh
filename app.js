@@ -376,7 +376,7 @@ PAGES.places = async v => {
     return `<div class="card">${p.image_url ? `<img loading="lazy" src="${esc(p.image_url)}" alt="" style="width:100%;height:130px;object-fit:cover;display:block">` : ''}<div class="b"><h3>${ci[p.category]} ${esc(p.name)}</h3>
     ${p.address ? `<div class="meta">📍 ${esc(p.address)}</div>` : ''}${p.hours ? `<div class="meta">🕒 ${esc(p.hours)}</div>` : ''}${p.phone ? `<div class="meta">📞 <a href="tel:${esc(p.phone)}">${esc(p.phone)}</a></div>` : ''}
     <a class="btn sm ghost" style="display:inline-block;margin-top:8px;text-decoration:none" target="_blank" rel="noopener" href="${esc(map)}">🗺️ ${t('open_map')}</a></div></div>`;
-  }).join('') : empty(ci[S.place.cat], t('empty_places'));
+  }).join('') + `<p class="meta" style="text-align:center;margin-top:10px">ℹ️ ${t('places_note')}</p>` : empty(ci[S.place.cat], t('empty_places'));
 };
 
 /* ============ FORMALAR ============ */

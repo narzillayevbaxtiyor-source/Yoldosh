@@ -190,6 +190,7 @@ const T = {
   hint_transfer:{uz:"Haydovchilar o'zi narx yozadi. Eng arzonini tanlang.",cyr:"Ҳайдовчилар ўзи нарх ёзади. Энг арзонини танланг.",ru:"Водители сами предлагают цену. Выберите выгодную."},
   hint_housing:{uz:"Tekshirilgan uy e'lonlari. Ko'rmasdan pul to'lamang.",cyr:"Текширилган уй эълонлари. Кўрмасдан пул тўламанг.",ru:"Проверенные объявления. Не платите, не увидев жильё."},
   hint_jobs:{uz:"Ish e'lonlari admin va AI tekshiruvidan o'tadi.",cyr:"Иш эълонлари админ ва AI текширувидан ўтади.",ru:"Вакансии проходят проверку админом и ИИ."},
+  places_note:{uz:"Joylar ochiq manbalar asosida to'plangan. Borishdan oldin xaritada manzil va ish vaqtini tekshiring.",cyr:"Жойлар очиқ манбалар асосида тўпланган. Боришдан олдин харитада манзил ва иш вақтини текширинг.",ru:"Места собраны по открытым источникам. Перед поездкой проверьте адрес и часы работы на карте."},
   hint_places:{uz:"Kasalxona, masjid, oshxona va pul o'tkazish joylari.",cyr:"Касалхона, масжид, ошхона ва пул ўтказиш жойлари.",ru:"Больницы, мечети, кафе и пункты денежных переводов."},
   trust1:{uz:"Tekshirilgan e'lonlar",cyr:"Текширилган эълонлар",ru:"Проверенные объявления"},
   trust2:{uz:"Telegram orqali tasdiq",cyr:"Telegram орқали тасдиқ",ru:"Подтверждение через Telegram"},
