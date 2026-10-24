@@ -1,5 +1,5 @@
 // Oddiy xizmat ishchisi: sayt qobig'ini keshlaydi, ma'lumotlar (Supabase) har doim yangi olinadi.
-const V = 'yoldosh-v3';
+const V = 'yoldosh-v4';
 const SHELL = ['./', 'index.html', 'style.css', 'i18n.js', 'app.js', 'art.js', 'icon-192.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

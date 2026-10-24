@@ -3,7 +3,7 @@
 const ART = (() => {
   const PAL = {
     russia: ['#4f7cff', '#b794f6'], kazakhstan: ['#38bdf8', '#34d399'], turkey: ['#f87171', '#fb923c'], korea: ['#f472b6', '#a78bfa'],
-    uae: ['#fbbf24', '#f97316'], poland: ['#fb7185', '#f59e0b'], uk: ['#6366f1', '#38bdf8'], def: ['#fb923c', '#f59e0b']
+    uae: ['#fbbf24', '#f97316'], saudi: ['#10b981', '#fbbf24'], poland: ['#fb7185', '#f59e0b'], uk: ['#6366f1', '#38bdf8'], def: ['#fb923c', '#f59e0b']
   };
   const onion = (x, y, w, h) => `<path d="M${x - w} ${y} Q${x - w - 3} ${y - h * .45} ${x} ${y - h} Q${x + w + 3} ${y - h * .45} ${x + w} ${y}Z"/><rect x="${x - .8}" y="${y - h - 9}" width="1.6" height="9"/>`;
   const rects = a => a.map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`).join('');
@@ -38,6 +38,10 @@ const ART = (() => {
     uk: {
       far: rects([[20, 118, 50, 32], [290, 114, 50, 36]]) + '<circle cx="300" cy="100" r="34" fill="none" stroke="#0b1b4d" stroke-width="3"/>',
       main: rects([[168, 62, 24, 88], [96, 112, 72, 38], [192, 112, 74, 38], [110, 100, 6, 12], [128, 100, 6, 12], [212, 100, 6, 12]]) + '<polygon points="166,62 194,62 180,22"/><circle cx="180" cy="80" r="7" fill="#fff" opacity=".55"/>'
+    },
+    saudi: {
+      far: '<path d="M0 150 L0 126 Q50 100 100 124 T200 120 T300 122 T360 114 L360 150Z"/>',
+      main: '<path d="M120 150 L120 118 A28 28 0 0 1 176 118 L176 150Z"/>' + rects([[236, 40, 22, 110], [200, 112, 22, 38], [74, 70, 7, 80], [72, 90, 11, 4]]) + '<polygon points="72,70 83,70 77.5,50"/><path d="M236 40 Q247 14 258 40Z"/><rect x="246" y="6" width="2" height="12"/><path d="M0 150 L0 138 Q60 122 120 140 T240 138 T360 134 L360 150Z"/>'
     },
     def: {
       far: rects([[10, 108, 24, 42], [40, 96, 20, 54], [270, 100, 22, 50], [300, 112, 30, 38]]),

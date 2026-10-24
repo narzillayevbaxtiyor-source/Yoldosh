@@ -186,3 +186,5 @@ small{color:var(--mut)}
 .wl .dots2{display:flex;gap:7px;justify-content:center;margin-bottom:16px}
 .wl .dots2 b{width:8px;height:8px;border-radius:50%;background:var(--line);transition:.25s}
 .wl .dots2 b.on{width:24px;border-radius:6px;background:var(--acc)}
+
+.seof{text-align:center;font-size:12.5px;opacity:.7;padding:0 14px 90px}.seof a{color:inherit}

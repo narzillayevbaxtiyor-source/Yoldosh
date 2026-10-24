@@ -15,9 +15,9 @@ const S = {
 };
 const t = k => (T[k] && (T[k][S.lang] || T[k].uz)) || k;
 const nm = r => r ? (r['name_' + S.lang] || r.name_uz) : '';
-const CUR = ['USD', 'RUB', 'KZT', 'TRY', 'KRW', 'AED', 'PLN', 'GBP', 'EUR', 'UZS'];
-const DEF_CUR = { russia: 'RUB', kazakhstan: 'KZT', turkey: 'TRY', korea: 'KRW', uae: 'AED', poland: 'PLN', uk: 'GBP' };
-const GRAD = { russia: ['#2563eb', '#7c3aed'], kazakhstan: ['#0ea5e9', '#14b8a6'], turkey: ['#dc2626', '#f97316'], korea: ['#db2777', '#8b5cf6'], uae: ['#d97706', '#eab308'], poland: ['#e11d48', '#fb7185'], uk: ['#1d4ed8', '#4338ca'] };
+const CUR = ['USD', 'RUB', 'KZT', 'TRY', 'KRW', 'AED', 'SAR', 'PLN', 'GBP', 'EUR', 'UZS'];
+const DEF_CUR = { russia: 'RUB', kazakhstan: 'KZT', turkey: 'TRY', korea: 'KRW', uae: 'AED', saudi: 'SAR', poland: 'PLN', uk: 'GBP' };
+const GRAD = { russia: ['#2563eb', '#7c3aed'], kazakhstan: ['#0ea5e9', '#14b8a6'], turkey: ['#dc2626', '#f97316'], korea: ['#db2777', '#8b5cf6'], uae: ['#d97706', '#eab308'], saudi: ['#059669', '#16a34a'], poland: ['#e11d48', '#fb7185'], uk: ['#1d4ed8', '#4338ca'] };
 const SECS = ['home', 'ticket', 'transfer', 'housing', 'jobs', 'places'];
 const ICON = { home: '🏠', ticket: '✈️', transfer: '🚕', housing: '🛏️', jobs: '💼', places: '📍' };
 const COL = { home: '#ea580c', ticket: '#2563eb', transfer: '#059669', housing: '#7c3aed', jobs: '#db2777', places: '#0891b2' };
@@ -644,6 +644,8 @@ async function init() {
       sb.from('cities').select('*').eq('active', true).order('sort'),
       sb.rpc('public_config')]);
     S.countries = c.data || []; S.cities = ci.data || []; S.bot = cfg.data && cfg.data.bot_username || null;
+    const qc = new URLSearchParams(location.search).get('c');   // Google sahifalaridan kelganda davlatni o'zi tanlaydi
+    if (qc && S.countries.some(x => x.slug === qc)) { S.country = qc; ls.set('country', qc); S.city = ''; }
     if (S.country && !country()) S.country = null;
   } catch (e) { console.error(e); }
   sb.auth.getSession().then(({ data }) => { if (data.session) { S.user = data.session.user; return loadProfile(); } }).catch(() => { });
